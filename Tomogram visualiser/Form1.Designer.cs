@@ -33,7 +33,15 @@
             trackBar1 = new TrackBar();
             radioButton1 = new RadioButton();
             radioButton2 = new RadioButton();
+            radioButton3 = new RadioButton();
+            trackBar2 = new TrackBar();
+            trackBar3 = new TrackBar();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
             ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -89,11 +97,75 @@
             radioButton2.UseVisualStyleBackColor = true;
             radioButton2.CheckedChanged += radioButton2_CheckedChanged;
             // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(406, 584);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(86, 19);
+            radioButton3.TabIndex = 5;
+            radioButton3.TabStop = true;
+            radioButton3.Text = "Quads Strip";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.CheckedChanged += radioButton3_CheckedChanged;
+            // 
+            // trackBar2
+            // 
+            trackBar2.Location = new Point(13, 533);
+            trackBar2.Name = "trackBar2";
+            trackBar2.Size = new Size(169, 45);
+            trackBar2.TabIndex = 6;
+            trackBar2.Scroll += trackBar2_Scroll;
+            // 
+            // trackBar3
+            // 
+            trackBar3.Location = new Point(204, 533);
+            trackBar3.Maximum = 255;
+            trackBar3.Minimum = 10;
+            trackBar3.Name = "trackBar3";
+            trackBar3.Size = new Size(186, 45);
+            trackBar3.TabIndex = 7;
+            trackBar3.Value = 10;
+            trackBar3.Scroll += trackBar3_Scroll;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(59, 576);
+            label1.Name = "label1";
+            label1.Size = new Size(28, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Min";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(261, 576);
+            label2.Name = "label2";
+            label2.Size = new Size(39, 15);
+            label2.TabIndex = 9;
+            label2.Text = "Width";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(646, 587);
+            label3.Name = "label3";
+            label3.Size = new Size(36, 15);
+            label3.TabIndex = 10;
+            label3.Text = "Слои";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(997, 581);
+            ClientSize = new Size(997, 610);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(trackBar3);
+            Controls.Add(trackBar2);
+            Controls.Add(radioButton3);
             Controls.Add(radioButton2);
             Controls.Add(radioButton1);
             Controls.Add(trackBar1);
@@ -103,6 +175,8 @@
             Text = "Form1";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -114,5 +188,11 @@
         private TrackBar trackBar1;
         private RadioButton radioButton1;
         private RadioButton radioButton2;
+        private RadioButton radioButton3;
+        private TrackBar trackBar2;
+        private TrackBar trackBar3;
+        private Label label1;
+        private Label label2;
+        private Label label3;
     }
 }

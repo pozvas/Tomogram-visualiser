@@ -7,7 +7,8 @@ namespace Tomogram_visualiser
     enum Mode
     {
         QUADS,
-        TEXTURE
+        TEXTURE,
+        QUADSTRIP
     }
     public partial class Form1 : Form
     {
@@ -19,9 +20,14 @@ namespace Tomogram_visualiser
         DateTime NextFPSUpdate = DateTime.Now.AddSeconds(1);
         bool needReload = false;
         Mode mode = Mode.QUADS;
+
+        private int min;
+        private int width;
         public Form1()
         {
             InitializeComponent();
+            min = trackBar2.Value;
+            width = trackBar3.Value;
             bin = new Bin();
             view = new View();
             radioButton1.Select();
@@ -72,16 +78,20 @@ namespace Tomogram_visualiser
             if (loaded)
             {
                 if (mode == Mode.QUADS)
-                    view.DrawQuads(currentLayer);
-                else
+                    view.DrawQuads(currentLayer, min, width);
+                if (mode == Mode.TEXTURE)
                 {
                     if (needReload)
                     {
-                        view.generateTexrureImage(currentLayer);
+                        view.generateTexrureImage(currentLayer, min, width);
                         view.Load2DTexture();
                         needReload = false;
                     }
                     view.DrawTexture();
+                }
+                if (mode == Mode.QUADSTRIP)
+                {
+                    view.DrawQuadsStrip(currentLayer, min, width);
                 }
                 glControl1.SwapBuffers();
             }
@@ -101,6 +111,23 @@ namespace Tomogram_visualiser
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             mode = Mode.TEXTURE;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            mode = Mode.QUADSTRIP;
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            min = trackBar2.Value;
+            needReload = true;
+        }
+
+        private void trackBar3_Scroll(object sender, EventArgs e)
+        {
+            width = trackBar3.Value;
+            needReload = true;
         }
     }
 }

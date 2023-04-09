@@ -32,14 +32,14 @@ namespace Tomogram_visualiser
             ErrorCode Er = GL.GetError();
             string str = Er.ToString();
         }
-        public void generateTexrureImage(int layerNum)
+        public void generateTexrureImage(int layerNum, int min, int width)
         {
             textureImage = new Bitmap(Bin.X, Bin.Y);
             for(int i = 0; i < Bin.X; i++) 
                 for(int j = 0; j < Bin.Y; j++)
                 {
                     int pixelNumber = i + j * Bin.X + layerNum * Bin.X * Bin.Y;
-                    textureImage.SetPixel(i, j, TransferFunction(Bin.array[pixelNumber]));
+                    textureImage.SetPixel(i, j, TransferFunction(Bin.array[pixelNumber], min, width));
                 }
         }
         public void DrawTexture()
@@ -72,7 +72,7 @@ namespace Tomogram_visualiser
             GL.Ortho(0, Bin.X, 0, Bin.Y, -1, 1);
             GL.Viewport(0, 0, width, height);
         }
-        public void DrawQuads(int layerNum)
+        public void DrawQuads(int layerNum, int min, int width)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Begin(BeginMode.Quads);
@@ -82,29 +82,57 @@ namespace Tomogram_visualiser
                     short value;
 
                     value = Bin.array[x + y * Bin.X + layerNum * Bin.X * Bin.Y];
-                    GL.Color3(TransferFunction(value));
+                    GL.Color3(TransferFunction(value, min, width));
                     GL.Vertex2(x, y);
 
                     value = Bin.array[x + (y + 1) * Bin.X + layerNum * Bin.X * Bin.Y];
-                    GL.Color3(TransferFunction(value));
+                    GL.Color3(TransferFunction(value, min, width));
                     GL.Vertex2(x, y + 1);
 
                     value = Bin.array[(x + 1) + (y + 1) * Bin.X + layerNum * Bin.X * Bin.Y];
-                    GL.Color3(TransferFunction(value));
+                    GL.Color3(TransferFunction(value, min, width));
                     GL.Vertex2(x + 1, y + 1);
 
                     value = Bin.array[(x + 1) + y * Bin.X + layerNum * Bin.X * Bin.Y];
-                    GL.Color3(TransferFunction(value));
+                    GL.Color3(TransferFunction(value, min, width));
                     GL.Vertex2(x + 1, y);
                 }
             GL.End();
         }
-        public Color TransferFunction(short value)
+        public void DrawQuadsStrip(int layerNum, int min, int width)
+        {
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            for (int y = 0; y < Bin.Y - 1; y++)
+            {
+                GL.Begin(BeginMode.QuadStrip);
+                for (int x = 0; x < Bin.X; x++)
+                {
+                    short value;
+                    value = Bin.array[x + y * Bin.X + layerNum * Bin.X * Bin.Y];
+                    GL.Color3(TransferFunction(value, min, width));
+                    GL.Vertex2(x, y);
+
+                    value = Bin.array[x + (y + 1) * Bin.X + layerNum * Bin.X * Bin.Y];
+                    GL.Color3(TransferFunction(value, min, width));
+                    GL.Vertex2(x, y + 1);
+
+                }
+                GL.End();
+            }
+        }
+        /*public Color TransferFunction(short value)
         {
             int min = 0;
             int max = 2000;
             int newVal = Clamp((value - min) * 255 / (max - min), 0, 255);
             return Color.FromArgb(255, newVal, newVal, newVal);
+        }*/
+        Color TransferFunction(short value, int min, int width)
+        {
+            int max = min + width;
+            int newVal = Clamp((value - min) * 255 / (max - min), 0, 255);
+            return Color.FromArgb(newVal, newVal, newVal);
         }
         public int Clamp(int value, int min, int max)
         {
